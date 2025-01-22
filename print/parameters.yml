@@ -1,0 +1,3 @@
+servcie_name: print-service
+kafka_broker: kafka:9092
+kafka_topic: print-jobs
