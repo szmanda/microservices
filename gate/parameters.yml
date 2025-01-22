@@ -1,2 +1,4 @@
-service_name: My little service
-port: 8031
+servcie_name: gate-service
+port: 80
+kafka_broker: microservices-kafka-1:9092
+kafka_topic: print-jobs
