@@ -45,7 +45,7 @@ func loadConfig(filename string) error {
 
 
 func main() {
-	err := loadConfig("print/parameters.yml")
+	err := loadConfig("parameters.yml")
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)
 	}

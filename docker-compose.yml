@@ -15,7 +15,7 @@ services:
     ports:
       - "20010:80"
     volumes:
-      - ./gate/:/app/gate/
+      - ./gate/:/app/
   print:
     build:
       context: ./print
@@ -23,7 +23,7 @@ services:
     ports:
       - "20020:80"
     volumes:
-      - ./print/:/app/print/
+      - ./print/:/app/
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:

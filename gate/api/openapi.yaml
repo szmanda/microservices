@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Print Service API
+  version: 1.0.0
+paths:
+  /hello:
+    get:
+      summary: Get hello message.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /print:
+    post:
+      summary: Submit a print job.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintJob'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+            description: Invalid request body.
+        '500':
+            description: Internal Server Error.
+
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message
+        service:
+          type: string
+          description: Service name
+    PrintJob:
+      type: object
+      required:
+        - document_name
+        - paper_size
+        - orientation
+        - copies
+        - printers
+      properties:
+        document_name:
+          type: string
+          description: The name of the document to print.
+        paper_size:
+          type: string
+          description: The paper size for printing.
+        orientation:
+          type: string
+          description: The orientation of the print job.
+        copies:
+          type: integer
+          description: The number of copies to print.
+          format: int32
+        printers:
+          type: array
+          items:
+            type: string
+            description: Array of printer names.
