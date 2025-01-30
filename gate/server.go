@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/segmentio/kafka-go"
 )
 
@@ -107,6 +108,12 @@ func (s *Server) PostNipChecker(ctx echo.Context) error {
 func StartServer() {
 	server := NewServer()
 	e := echo.New()
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:20000", "http://example.com"},                     // Allowed origins
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete}, // Allowed methods
+	}))
+
 	api.RegisterHandlers(e, server)
 
 	// Start the server in a goroutine so that it doesn't block the main thread.
