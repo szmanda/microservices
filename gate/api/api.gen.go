@@ -7,6 +7,42 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// NipRequest defines model for NipRequest.
+type NipRequest struct {
+	// Nip The NIP code to check.
+	Nip string `json:"nip"`
+}
+
+// NipResponse defines model for NipResponse.
+type NipResponse struct {
+	// Apartment Apartment number.
+	Apartment *string `json:"apartment"`
+
+	// Building Building number.
+	Building *string `json:"building"`
+
+	// City City name.
+	City *string `json:"city"`
+
+	// LongName Full name of the company.
+	LongName *string `json:"longName"`
+
+	// Province Province name.
+	Province *string `json:"province"`
+
+	// ShortName Short name of the company.
+	ShortName *string `json:"shortName"`
+
+	// Street Street name.
+	Street *string `json:"street"`
+
+	// TaxId Tax ID of the company.
+	TaxId *string `json:"taxId"`
+
+	// Zip ZIP code
+	Zip *string `json:"zip"`
+}
+
 // PrintJob defines model for PrintJob.
 type PrintJob struct {
 	// Copies The number of copies to print.
@@ -41,6 +77,9 @@ type Response struct {
 	Service *string `json:"service,omitempty"`
 }
 
+// PostNipCheckerJSONRequestBody defines body for PostNipChecker for application/json ContentType.
+type PostNipCheckerJSONRequestBody = NipRequest
+
 // PostPrintJSONRequestBody defines body for PostPrint for application/json ContentType.
 type PostPrintJSONRequestBody = PrintJob
 
@@ -49,6 +88,9 @@ type ServerInterface interface {
 	// Get hello message.
 	// (GET /hello)
 	GetHello(ctx echo.Context) error
+	// Check the NIP code.
+	// (POST /nip_checker)
+	PostNipChecker(ctx echo.Context) error
 	// Submit a print job.
 	// (POST /print)
 	PostPrint(ctx echo.Context) error
@@ -68,6 +110,15 @@ func (w *ServerInterfaceWrapper) GetHello(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.GetHello(ctx)
+	return err
+}
+
+// PostNipChecker converts echo context to params.
+func (w *ServerInterfaceWrapper) PostNipChecker(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostNipChecker(ctx)
 	return err
 }
 
@@ -118,6 +169,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	}
 
 	router.GET(baseURL+"/hello", wrapper.GetHello)
+	router.POST(baseURL+"/nip_checker", wrapper.PostNipChecker)
 	router.POST(baseURL+"/print", wrapper.PostPrint)
 	router.GET(baseURL+"/print/status", wrapper.GetPrintStatus)
 

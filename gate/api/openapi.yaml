@@ -43,6 +43,27 @@ paths:
             application/json:
               schema:
                  $ref: '#/components/schemas/PrintStatus'
+  /nip_checker:
+    post:
+      summary: Check the NIP code.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NipRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NipResponse'
+        '400':
+            description: Invalid request body.
+        '500':
+            description: Internal Server Error.
+
 
 components:
   schemas:
@@ -91,3 +112,50 @@ components:
         service:
           type: string
           description: Service name
+    NipRequest:
+      type: object
+      required:
+        - nip
+      properties:
+        nip:
+          type: string
+          description: The NIP code to check.
+    NipResponse:
+      type: object
+      properties:
+        shortName:
+          type: string
+          description: Short name of the company.
+          nullable: true
+        longName:
+          type: string
+          description: Full name of the company.
+          nullable: true
+        taxId:
+          type: string
+          description: Tax ID of the company.
+          nullable: true
+        apartment:
+          type: string
+          description: Apartment number.
+          nullable: true
+        building:
+          type: string
+          description: Building number.
+          nullable: true
+        street:
+          type: string
+          description: Street name.
+          nullable: true
+        city:
+          type: string
+          description: City name.
+          nullable: true
+        province:
+            type: string
+            description: Province name.
+            nullable: true
+        zip:
+            type: string
+            description: ZIP code
+            nullable: true

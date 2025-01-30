@@ -3,3 +3,5 @@ port: 80
 kafka_broker: microservices-kafka-1:9092
 kafka_topic: print-jobs
 kafka_topic_ack: print-job-confirmations
+remote_url: http://api.remote.com/getcontractor
+remote_auth_token: RQiU0xmQiDEKTxDxPgnHUtyF34IBmpurWeLimDa

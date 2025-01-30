@@ -83,7 +83,7 @@ func (s *Server) GetPrintStatus(ctx echo.Context) error {
 	log.Println("Received request to /print/status")
 
 	msgCtx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
-	defer cancel() // a sneaky deferred call of a function that was returned in the previous line
+	defer cancel()
 	// msgCtx := context.Background() // no timeout -- a blocking read
 
 	m, err := s.kafkaReaderAck.ReadMessage(msgCtx)
@@ -113,6 +113,24 @@ func (s *Server) GetPrintStatus(ctx echo.Context) error {
 		Message: &msg,
 		Service: &appConfig.ServiceName,
 	})
+}
+
+func (s *Server) PostNipChecker(ctx echo.Context) error {
+	log.Println("Received request to /nip_checker")
+	var nipRequest api.NipRequest
+	if err := ctx.Bind(&nipRequest); err != nil {
+		log.Printf("Error decoding JSON: %v", err)
+		return ctx.String(http.StatusBadRequest, "Invalid request body")
+	}
+
+	nip := nipRequest.Nip
+	nipInfo, err := getNipData(nip)
+	if err != nil {
+		log.Printf("Error getting NIP data: %v", err)
+		return ctx.String(http.StatusInternalServerError, "Failed to fetch NIP data")
+	}
+	return ctx.JSON(http.StatusOK, nipInfo)
+
 }
 
 func StartServer() {
