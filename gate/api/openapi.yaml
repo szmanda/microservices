@@ -33,6 +33,16 @@ paths:
             description: Invalid request body.
         '500':
             description: Internal Server Error.
+  /print/status:
+    get:
+      summary: Get the status of a print job.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/PrintStatus'
 
 components:
   schemas:
@@ -72,3 +82,12 @@ components:
           items:
             type: string
             description: Array of printer names.
+    PrintStatus:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The status of the print job.
+        service:
+          type: string
+          description: Service name

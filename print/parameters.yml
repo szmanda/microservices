@@ -1,3 +1,4 @@
 servcie_name: print-service
 kafka_broker: kafka:9092
 kafka_topic: print-jobs
+kafka_topic_ack: print-job-confirmations

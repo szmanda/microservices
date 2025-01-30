@@ -2,3 +2,4 @@ servcie_name: gate-service
 port: 80
 kafka_broker: microservices-kafka-1:9092
 kafka_topic: print-jobs
+kafka_topic_ack: print-job-confirmations

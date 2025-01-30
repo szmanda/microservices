@@ -23,6 +23,15 @@ type PrintJob struct {
 	Printers  []string `json:"printers"`
 }
 
+// PrintStatus defines model for PrintStatus.
+type PrintStatus struct {
+	// Message The status of the print job.
+	Message *string `json:"message,omitempty"`
+
+	// Service Service name
+	Service *string `json:"service,omitempty"`
+}
+
 // Response defines model for Response.
 type Response struct {
 	// Message Response message
@@ -43,6 +52,9 @@ type ServerInterface interface {
 	// Submit a print job.
 	// (POST /print)
 	PostPrint(ctx echo.Context) error
+	// Get the status of a print job.
+	// (GET /print/status)
+	GetPrintStatus(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -65,6 +77,15 @@ func (w *ServerInterfaceWrapper) PostPrint(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.PostPrint(ctx)
+	return err
+}
+
+// GetPrintStatus converts echo context to params.
+func (w *ServerInterfaceWrapper) GetPrintStatus(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetPrintStatus(ctx)
 	return err
 }
 
@@ -98,5 +119,6 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 
 	router.GET(baseURL+"/hello", wrapper.GetHello)
 	router.POST(baseURL+"/print", wrapper.PostPrint)
+	router.GET(baseURL+"/print/status", wrapper.GetPrintStatus)
 
 }
